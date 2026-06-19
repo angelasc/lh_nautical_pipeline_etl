@@ -6,7 +6,7 @@
 
 Este projeto desenvolve um Pipeline de Processamento de Dados (ETL) ponta a ponta e uma Modelagem Dimensional com foco no histórico de vendas, gestão de clientes via CRM, custos de importação e taxas de câmbio para uma empresa de equipamentos náuticos e marítimos.
 
-O objetivo principal é transformar dados brutos e multiformatos (CSV, JSON) em uma estrutura analítica otimizada para a extração de insights de negócios, cálculo de margens de lucro e análise de desempenho.
+O objetivo principal é transformar dados brutos em multiformatos (CSV, JSON) em uma estrutura analítica otimizada para a extração de insights de negócios, cálculo de margens de lucro e análise de desempenho.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -22,20 +22,20 @@ O projeto mitiga as inconsistências de dados dos sistemas de origem através da
 2. **Tratamento de Strings Complexas:** Correção e unificação de e-mails que continham caracteres inválidos (por exemplo, substituindo `#` por `@`).
 3. **Normalização de Categorias de Produtos:** Mapeamento via Expressões Regulares para consolidar mais de 30 variações de texto mal escritas em apenas 3 macrocategorias oficiais (*eletrônicos, propulsão e ancoragem*).
 4. **Tipagem de Dados (Casting):** Conversão de strings monetárias (ex: `R$ 33122.52`) para formatos numéricos adequados (`float64`) para cálculos matemáticos.
-5. **Deduplicação:** Identificação e remoção de registros duplicados para garantir a unicidade das chaves primárias.
+5. **Tratamento de dados duplicados:** Identificação e remoção de registros duplicados para garantir a unicidade das chaves primárias.
 
 ## 📐 Modelagem Dimensional (Star Schema)
 
 Para garantir alta performance em consultas analíticas e facilitar a integração com ferramentas de Visualização de Dados (como Power BI ou Tableau), a arquitetura de dados segue o padrão **Star Schema** (Modelo Estrela).
 
-A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, permitindo análises granulares por cliente, produto, tempo e localização geográfica.
+A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, permitindo análises granulares por cliente, produto e vendas.
 
 ## 🏗️ Arquitetura do Modelo
 
 ### Tabela Fato
 
 * **`sales.csv`**
-  * **Descrição:** Tabela central do modelo. Armazena todas as transações de vendas ocorridas e as métricas quantitativas.
+  * Tabela central do modelo. Armazena todas as transações de vendas ocorridas e as métricas quantitativas.
   * **Esquema:**
     ```sql
     ├── sale_id (PK)
@@ -49,7 +49,7 @@ A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, p
 ### Tabelas Dimensão
 
 * **`customers.csv`**
-  * **Descrição:** Armazena informações descritivas e atributos sobre os clientes.
+  * Armazena informações descritivas e atributos sobre os clientes.
   * **Esquema:**
     ```sql
     ├── client_id (PK)
@@ -60,7 +60,7 @@ A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, p
     ```
 
 * **`products.csv`**
-  * **Descrição:** Armazena informações do catálogo, categorias e detalhes de preços de todos os produtos.
+  * Armazena informações do catálogo, categorias e detalhes de preços de todos os produtos.
   * **Esquema:**
     ```sql
     ├── product_id (PK)
@@ -72,7 +72,7 @@ A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, p
 ### Tabelas Auxiliares
 
 * **`costs.csv`**
-  * **Descrição:** Armazena informações sobre os custos de compra dos produtos. Como os produtos são importados, eles são adquiridos em Dólares Americanos (USD) e convertidos para o Real Brasileiro (BRL).
+  * Armazena informações sobre os custos de compra dos produtos. Como os produtos são importados, eles são adquiridos em Dólares Americanos (USD) e convertidos para o Real Brasileiro (BRL).
   * **Esquema:**
     ```sql
     ├── purchase_id (PK)
@@ -85,7 +85,7 @@ A estrutura consiste em uma tabela fato central cercada por tabelas dimensão, p
     ```
 
 * **`financial_report.csv`**
-  * **Descrição:** Uma visão consolidada ou relatório que agrega os dados de vendas com os custos de produção/importação para exibir métricas de lucratividade.
+  * Uma visão consolidada ou relatório que agrega os dados de vendas com os custos de produção/importação para exibir métricas de lucratividade.
   * **Esquema:**
     ```sql
     ├── sale_id (FK)
